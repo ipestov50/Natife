@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class PostCell: UITableViewCell {
+
     
     let title       = UILabel()
     let previewText = UILabel()
@@ -26,6 +27,7 @@ class PostCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
         layout()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -57,7 +59,7 @@ class PostCell: UITableViewCell {
         likesNumber.translatesAutoresizingMaskIntoConstraints = false
         likesNumber.font = UIFont.preferredFont(forTextStyle: .caption1)
         likesNumber.textColor = .gray
-        likesNumber.text = "999"
+        likesNumber.text = "9"
         
         // Date Label
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -66,6 +68,8 @@ class PostCell: UITableViewCell {
         dateLabel.text = "21 day ago"
         dateLabel.textColor = .gray
         
+        // Button
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
         // Stack View
         previewTextStack.translatesAutoresizingMaskIntoConstraints = false
@@ -120,6 +124,9 @@ class PostCell: UITableViewCell {
         
     }
     
+    @objc func buttonTapped() {
+        print("tapped")
+    }
     
     
     

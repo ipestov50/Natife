@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import UIKit
 
+
 class ViewController: UIViewController {
     
     var tableView = UITableView()
@@ -17,11 +18,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        
+        fetchPosts()
     }
 }
 
 extension ViewController {
+    
     private func setup() {
         setupTableView()
     }
@@ -52,7 +54,7 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 1
     }
 }
 
@@ -62,3 +64,45 @@ extension ViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - Networking
+extension ViewController {
+    
+    func fetchPosts() {
+            let url = URL(string: "https://raw.githubusercontent.com/anton-natife/jsons/master/api/main.json")!
+
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                DispatchQueue.main.async {
+                    guard let data = data, error == nil else {
+                        return
+                    }
+                    
+                    var result: Result?
+                    do {
+                         let jsonData = try Data(contentsOf: url)
+                        result = try JSONDecoder().decode(Result.self, from: jsonData)
+                        
+                        if let result = result {
+                            print(result)
+                        } else {
+                            print("Failed to parse")
+                        }
+                    } catch {
+                        print("Error: \(error)")
+                    }
+                    
+                }
+            }.resume()
+    }
+
+    struct Result: Codable {
+        let posts: [Post]
+    }
+
+    struct Post: Codable {
+        
+        let title: String
+        let preview_text: String
+        let likes_count: Int
+        
+    }
+}
