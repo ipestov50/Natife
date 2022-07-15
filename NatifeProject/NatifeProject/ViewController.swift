@@ -13,12 +13,14 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var result: Result?
+    
     var tableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        fetchPosts()
+        fetchData()
     }
 }
 
@@ -47,17 +49,23 @@ extension ViewController {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseID, for: indexPath) as! PostCell
         return cell
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
+    
+    
+    
 }
 
+// MARK: - UITableViewDelegate
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -67,16 +75,14 @@ extension ViewController: UITableViewDelegate {
 // MARK: - Networking
 extension ViewController {
     
-    func fetchPosts() {
+    func fetchData() {
             let url = URL(string: "https://raw.githubusercontent.com/anton-natife/jsons/master/api/main.json")!
 
             URLSession.shared.dataTask(with: url) { data, response, error in
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [self] in
                     guard let data = data, error == nil else {
                         return
                     }
-                    
-                    var result: Result?
                     do {
                          let jsonData = try Data(contentsOf: url)
                         result = try JSONDecoder().decode(Result.self, from: jsonData)
@@ -89,20 +95,7 @@ extension ViewController {
                     } catch {
                         print("Error: \(error)")
                     }
-                    
                 }
             }.resume()
-    }
-
-    struct Result: Codable {
-        let posts: [Post]
-    }
-
-    struct Post: Codable {
-        
-        let title: String
-        let preview_text: String
-        let likes_count: Int
-        
     }
 }
