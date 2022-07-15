@@ -6,14 +6,13 @@
 //
 
 import UIKit
-
 import Foundation
-import UIKit
-
 
 class ViewController: UIViewController {
     
-    var result: Result?
+    var posts: [Post]?
+    
+//    var post: Post?
     
     var tableView = UITableView()
     
@@ -33,9 +32,10 @@ extension ViewController {
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
         
         tableView.register(PostCell.self, forCellReuseIdentifier: PostCell.reuseID)
-        tableView.rowHeight = PostCell.rowHeight
+        tableView.rowHeight = UITableView.automaticDimension
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
@@ -52,17 +52,16 @@ extension ViewController {
 // MARK: - UITableViewDataSource
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return posts?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseID, for: indexPath) as! PostCell
+        if let post = posts?[indexPath.row] {
+            cell.configure(with: post)
+        }
         return cell
     }
-    
-    
-    
-    
 }
 
 // MARK: - UITableViewDelegate
@@ -85,12 +84,14 @@ extension ViewController {
                     }
                     do {
                          let jsonData = try Data(contentsOf: url)
-                        result = try JSONDecoder().decode(Result.self, from: jsonData)
+                        posts = try JSONDecoder().decode(Result.self, from: jsonData).posts
                         
-                        if let result = result {
-                            print(result)
+                        if let result = posts {
+                            self.tableView.reloadData()
+                            Date(timeIntervalSince1970: TimeInterval())
                         } else {
                             print("Failed to parse")
+                            
                         }
                     } catch {
                         print("Error: \(error)")
