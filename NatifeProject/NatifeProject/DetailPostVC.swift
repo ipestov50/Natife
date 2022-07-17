@@ -12,12 +12,13 @@ import UIKit
 
 class DetailPostVC: UIViewController {
     
+    var posts: Post?
+    
     let imageView       = UIImageView()
     let stackView       = UIStackView()
     let titleLabel      = UILabel()
     let previewText     = UILabel()
     let likes           = UILabel()
-    let likesNumber     = UILabel()
     let dateLabel       = UILabel()
     
     override func viewDidLoad() {
@@ -48,26 +49,20 @@ extension DetailPostVC {
         
         // Preview Text
         previewText.translatesAutoresizingMaskIntoConstraints = false
-        previewText.text = "Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome lcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome Welcome."
+        previewText.text = posts?.preview_text
         previewText.font = UIFont.preferredFont(forTextStyle: .body)
         previewText.numberOfLines = 10
         
         // Likes
         likes.translatesAutoresizingMaskIntoConstraints = false
         likes.font = UIFont.preferredFont(forTextStyle: .body)
-        likes.text = "❤️"
-        
-        // Likes Number
-        likesNumber.translatesAutoresizingMaskIntoConstraints = false
-        likesNumber.font = UIFont.preferredFont(forTextStyle: .caption1)
-        likesNumber.textColor = .gray
-        likesNumber.text = "999"
+        likes.text = "❤️ \(posts?.likes_count ?? 0)"
         
         // Date Label
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
         dateLabel.adjustsFontForContentSizeCategory = true // A Boolean that indicates whether the object automatically updates its font when dateLabelitleevice's content size category changes.
-        dateLabel.text = "21 day ago"
+        dateLabel.text = "\(posts?.timeshamp.convertToMonthYearFormat() ?? "")"
         dateLabel.textColor = .gray
     }
     
@@ -79,7 +74,6 @@ extension DetailPostVC {
         view.addSubview(imageView)
         view.addSubview(titleLabel)
         view.addSubview(likes)
-        view.addSubview(likesNumber)
         view.addSubview(dateLabel)
         
         NSLayoutConstraint.activate([
@@ -91,8 +85,8 @@ extension DetailPostVC {
             imageView.widthAnchor.constraint(equalToConstant: 400),
             
             // Title Label
-            titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: imageView.bottomAnchor, multiplier: 2),
-            titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: stackView.leadingAnchor, multiplier: 0),
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 0),
             
             // Stack View
             stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
@@ -100,15 +94,12 @@ extension DetailPostVC {
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
             
             // Likes
-            likes.topAnchor.constraint(equalToSystemSpacingBelow: stackView.bottomAnchor, multiplier: 2),
-            likes.leadingAnchor.constraint(equalToSystemSpacingAfter: stackView.leadingAnchor, multiplier: 0),
+            likes.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8),
+            likes.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 0),
             
-            // Likes Number
-            likesNumber.topAnchor.constraint(equalTo: likes.topAnchor, constant: 4),
-            likesNumber.leadingAnchor.constraint(equalToSystemSpacingAfter: likes.leadingAnchor, multiplier: 3),
             
             // Date Label
-            dateLabel.topAnchor.constraint(equalToSystemSpacingBelow: stackView.bottomAnchor, multiplier: 2),
+            dateLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10),
             dateLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: 0),
             
         ])

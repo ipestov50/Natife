@@ -10,7 +10,6 @@ import UIKit
 
 class PostCell: UITableViewCell {
     
-    var posts: Post?
     
     let name        = UILabel()
     let previewText = UILabel()
@@ -49,14 +48,14 @@ class PostCell: UITableViewCell {
         // Likes
         likes.translatesAutoresizingMaskIntoConstraints = false
         likes.font = UIFont.preferredFont(forTextStyle: .body)
-        likes.text = "❤️"
+        
         
         
         // Date Label
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
         dateLabel.adjustsFontForContentSizeCategory = true // A Boolean that indicates whether the object automatically updates its font when dateLabelitleevice's content size category changes.
-        dateLabel.text = "21 day ago"
+//        dateLabel.text = "21 day ago"
         dateLabel.textColor = .gray
         
         // Button
@@ -109,5 +108,7 @@ class PostCell: UITableViewCell {
         previewText.text = post.preview_text
         likes.text = "❤️ \(post.likes_count)"
 //        dateLabel.text = Date(timeIntervalSince1970: TimeInterval(post.timeshamp))
+        dateLabel.text = "\(post.timeshamp.convertToMonthYearFormat())"
     }
+    
 }

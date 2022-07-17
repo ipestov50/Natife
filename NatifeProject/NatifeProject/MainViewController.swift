@@ -8,11 +8,9 @@
 import UIKit
 import Foundation
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
     
-    var posts: [Post]?
-    
-//    var post: Post?
+    public var posts: [Post]? = []
     
     var tableView = UITableView()
     
@@ -20,11 +18,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setup()
         fetchData()
+        configureItems()
+        
     }
 }
 
-extension ViewController {
-    
+extension MainViewController {
     private func setup() {
         setupTableView()
     }
@@ -47,10 +46,38 @@ extension ViewController {
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+    
+    private func configureItems() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "slider.horizontal.3"),
+            style: .plain,
+            target: self,
+            action: #selector(navBarButtonTapped))
+    }
+    
+    @objc func navBarButtonTapped() {
+        sortPostsByLikes()
+        sortPostsByDate()
+        
+    }
+    
+    func sortPostsByLikes() {
+        var sortedPosts = posts?.sorted { (lhs: Post, rhs: Post) -> Bool in
+            return lhs.likes_count < rhs.likes_count
+        }
+        print(sortedPosts)
+    }
+    
+    func sortPostsByDate() {
+        var sortedPosts = posts?.sorted { (lhs: Post, rhs: Post) -> Bool in
+            return lhs.timeshamp < rhs.timeshamp
+        }
+    }
+    
 }
 
 // MARK: - UITableViewDataSource
-extension ViewController: UITableViewDataSource {
+extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts?.count ?? 0
     }
@@ -65,14 +92,19 @@ extension ViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension ViewController: UITableViewDelegate {
+extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        tableView.deselectRow(at: indexPath, animated: true)
+        let detailPostVC = DetailPostVC()
+        detailPostVC.posts = posts?[indexPath.row]
+        navigationController?.pushViewController(detailPostVC, animated: true)
+        tableView.reloadData()
     }
 }
 
 // MARK: - Networking
-extension ViewController {
+extension MainViewController {
     
     func fetchData() {
             let url = URL(string: "https://raw.githubusercontent.com/anton-natife/jsons/master/api/main.json")!
@@ -91,7 +123,6 @@ extension ViewController {
                             Date(timeIntervalSince1970: TimeInterval())
                         } else {
                             print("Failed to parse")
-                            
                         }
                     } catch {
                         print("Error: \(error)")

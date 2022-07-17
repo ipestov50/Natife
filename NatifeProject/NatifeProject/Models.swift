@@ -11,10 +11,16 @@ struct Result: Codable {
     let posts: [Post]
 }
 
-struct Post: Codable {
+struct Post: Codable, Comparable {
+    static func < (lhs: Post, rhs: Post) -> Bool {
+        true
+    }
+    
+    
+    
     
     let title: String
     let preview_text: String
     let likes_count: Int
-    
+    let timeshamp: Date
 }
