@@ -10,6 +10,7 @@ import UIKit
 
 class PostCell: UITableViewCell {
     
+    var state: Bool = true
     
     let name        = UILabel()
     let previewText = UILabel()
@@ -42,8 +43,7 @@ class PostCell: UITableViewCell {
         previewText.translatesAutoresizingMaskIntoConstraints = false
         previewText.font = UIFont.preferredFont(forTextStyle: .body)
         previewText.textColor = .systemGray
-        previewText.numberOfLines = 2
-        
+        previewText.numberOfLines = 0
         
         // Likes
         likes.translatesAutoresizingMaskIntoConstraints = false
@@ -100,7 +100,13 @@ class PostCell: UITableViewCell {
     }
     
     @objc func buttonTapped() {
-        print("tapped")
+        
+        if state {
+            previewText.numberOfLines = 2
+        } else {
+            previewText.numberOfLines = 0
+        }
+        state.toggle()
     }
     
     func configure(with post: Post) {
@@ -108,7 +114,16 @@ class PostCell: UITableViewCell {
         previewText.text = post.preview_text
         likes.text = "❤️ \(post.likes_count)"
 //        dateLabel.text = Date(timeIntervalSince1970: TimeInterval(post.timeshamp))
-        dateLabel.text = "\(post.timeshamp.convertToMonthYearFormat())"
+//        dateLabel.text = "\(post.timeshamp.())"
+    }
+    
+    func updateState() {
+        if previewText.numberOfLines > 2 {
+            button.isHidden = false
+            previewText.numberOfLines = 2
+        } else {
+            button.isHidden = true
+        }
     }
     
 }

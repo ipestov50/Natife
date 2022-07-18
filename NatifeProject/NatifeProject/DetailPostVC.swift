@@ -25,11 +25,13 @@ class DetailPostVC: UIViewController {
         super.viewDidLoad()
         style()
         layout()
+        
     }
 }
 
 extension DetailPostVC {
     func style() {
+        view.backgroundColor = .white
         
         // Image View
         imageView.translatesAutoresizingMaskIntoConstraints = false

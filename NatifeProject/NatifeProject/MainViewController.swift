@@ -10,7 +10,12 @@ import Foundation
 
 class MainViewController: UIViewController {
     
-    public var posts: [Post]? = []
+    var posts: [Post] = []
+    var filtered: [Post] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     var tableView = UITableView()
     
@@ -56,22 +61,57 @@ extension MainViewController {
     }
     
     @objc func navBarButtonTapped() {
-        sortPostsByLikes()
-        sortPostsByDate()
+        let controller = UIAlertController(
+            title: "Sorting Filter",
+            message: nil,
+            preferredStyle: .actionSheet)
+        
+        let byLikesButton = UIAlertAction(title: "Sort by likes", style: .default) { _ in
+            controller.dismiss(animated: true) { [weak self] in
+                self?.sortPostsByLikes()
+            }
+        }
+        
+        let byDateButton = UIAlertAction(title: "Sort by date", style: .default) { _ in
+            controller.dismiss(animated: true) { [weak self] in
+                self?.sortPostsByDate()
+            }
+        }
+        
+        let resetFilterButton = UIAlertAction(title: "Reset sorting", style: .destructive) { _ in
+            controller.dismiss(animated: true) { [weak self] in
+                self?.resetPostSorting()
+            }
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            controller.dismiss(animated: true)
+        }
+        
+        [byLikesButton, byDateButton, resetFilterButton, cancel].forEach {
+            controller.addAction($0)
+        }
+        
+        present(controller, animated: true)
         
     }
     
     func sortPostsByLikes() {
-        var sortedPosts = posts?.sorted { (lhs: Post, rhs: Post) -> Bool in
+        let sortedPosts = posts.sorted { (lhs: Post, rhs: Post) -> Bool in
             return lhs.likes_count < rhs.likes_count
         }
-        print(sortedPosts)
+        filtered = sortedPosts
     }
     
     func sortPostsByDate() {
-        var sortedPosts = posts?.sorted { (lhs: Post, rhs: Post) -> Bool in
+        let sortedPosts = posts.sorted { (lhs: Post, rhs: Post) -> Bool in
             return lhs.timeshamp < rhs.timeshamp
         }
+        filtered = sortedPosts
+    }
+    
+    func resetPostSorting() {
+        filtered = posts
     }
     
 }
@@ -79,16 +119,21 @@ extension MainViewController {
 // MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return posts?.count ?? 0
+        return filtered.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseID, for: indexPath) as! PostCell
-        if let post = posts?[indexPath.row] {
-            cell.configure(with: post)
-        }
+        let post = filtered[indexPath.row]
+        cell.configure(with: post)
+        
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print((cell as? PostCell)?.previewText.numberOfLines)
+    }
+    
 }
 
 // MARK: - UITableViewDelegate
@@ -97,7 +142,8 @@ extension MainViewController: UITableViewDelegate {
         
         tableView.deselectRow(at: indexPath, animated: true)
         let detailPostVC = DetailPostVC()
-        detailPostVC.posts = posts?[indexPath.row]
+        detailPostVC.posts = filtered[indexPath.row]
+        detailPostVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(detailPostVC, animated: true)
         tableView.reloadData()
     }
@@ -107,27 +153,21 @@ extension MainViewController: UITableViewDelegate {
 extension MainViewController {
     
     func fetchData() {
-            let url = URL(string: "https://raw.githubusercontent.com/anton-natife/jsons/master/api/main.json")!
-
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                DispatchQueue.main.async { [self] in
-                    guard let data = data, error == nil else {
-                        return
-                    }
-                    do {
-                         let jsonData = try Data(contentsOf: url)
-                        posts = try JSONDecoder().decode(Result.self, from: jsonData).posts
-                        
-                        if let result = posts {
-                            self.tableView.reloadData()
-                            Date(timeIntervalSince1970: TimeInterval())
-                        } else {
-                            print("Failed to parse")
-                        }
-                    } catch {
-                        print("Error: \(error)")
-                    }
+        let url = URL(string: "https://raw.githubusercontent.com/anton-natife/jsons/master/api/main.json")!
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            DispatchQueue.main.async { [self] in
+                guard let data = data, error == nil else {
+                    return
                 }
-            }.resume()
+                do {
+                    let jsonData = try Data(contentsOf: url)
+                    posts = try JSONDecoder().decode(Result.self, from: jsonData).posts
+                    filtered = posts
+                } catch {
+                    print("Error: \(error)")
+                }
+            }
+        }.resume()
     }
 }
