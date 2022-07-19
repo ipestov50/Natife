@@ -35,7 +35,7 @@ class PostCell: UITableViewCell {
         // Title Label
         name.translatesAutoresizingMaskIntoConstraints = false
         name.font = UIFont.preferredFont(forTextStyle: .title3)
-        name.adjustsFontForContentSizeCategory = true // A Boolean that indicates whether the object automatically updates its font when titleevice's content size category changes.
+        name.adjustsFontForContentSizeCategory = true
         name.text = "Charlie"
         name.textColor = .black
         
@@ -50,12 +50,10 @@ class PostCell: UITableViewCell {
         likes.font = UIFont.preferredFont(forTextStyle: .body)
         
         
-        
         // Date Label
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-        dateLabel.adjustsFontForContentSizeCategory = true // A Boolean that indicates whether the object automatically updates its font when dateLabelitleevice's content size category changes.
-//        dateLabel.text = "21 day ago"
+        dateLabel.adjustsFontForContentSizeCategory = true
         dateLabel.textColor = .gray
         
         // Button
@@ -113,17 +111,30 @@ class PostCell: UITableViewCell {
         
         previewText.text = post.preview_text
         likes.text = "❤️ \(post.likes_count)"
-//        dateLabel.text = Date(timeIntervalSince1970: TimeInterval(post.timeshamp))
-//        dateLabel.text = "\(post.timeshamp.())"
+        dateLabel.text = "\(configureDateLabel(with: post))"
     }
     
     func updateState() {
+        
         if previewText.numberOfLines > 2 {
             button.isHidden = false
             previewText.numberOfLines = 2
         } else {
             button.isHidden = true
         }
+    }
+    
+    
+    func configureDateLabel(with post: Post) -> String {
+
+        let exampleDate = Date(timeIntervalSince1970: TimeInterval(post.timeshamp))
+        
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .full
+        
+        let relativeDate = formatter.localizedString(for: exampleDate, relativeTo: Date.now)
+        
+        return relativeDate
     }
     
 }

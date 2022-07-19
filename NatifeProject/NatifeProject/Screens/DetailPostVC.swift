@@ -64,7 +64,7 @@ extension DetailPostVC {
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
         dateLabel.adjustsFontForContentSizeCategory = true // A Boolean that indicates whether the object automatically updates its font when dateLabelitleevice's content size category changes.
-        dateLabel.text = "\(posts?.timeshamp.convertToMonthYearFormat() ?? "")"
+        dateLabel.text = "\(posts?.timeshamp.getDateStringFromUTC(with: posts!) ?? "")"
         dateLabel.textColor = .gray
     }
     

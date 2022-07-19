@@ -11,6 +11,7 @@ import Foundation
 class MainViewController: UIViewController {
     
     var posts: [Post] = []
+    var post: Post?
     var filtered: [Post] = [] {
         didSet {
             tableView.reloadData()
@@ -24,13 +25,13 @@ class MainViewController: UIViewController {
         setup()
         fetchData()
         configureItems()
-        
     }
 }
 
 extension MainViewController {
     private func setup() {
         setupTableView()
+        
     }
     
     private func setupTableView() {
@@ -131,7 +132,7 @@ extension MainViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print((cell as? PostCell)?.previewText.numberOfLines)
+        print((cell as? PostCell)?.previewText.numberOfLines as Any)
     }
     
 }
