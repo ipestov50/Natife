@@ -13,7 +13,6 @@
 		96FC9EF0288030A100FECC10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96FC9EEF288030A100FECC10 /* Assets.xcassets */; };
 		96FC9EF3288030A100FECC10 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96FC9EF1288030A100FECC10 /* LaunchScreen.storyboard */; };
 		96FC9EFB2880347F00FECC10 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FC9EFA2880347F00FECC10 /* PostCell.swift */; };
-		96FC9EFD28814D4100FECC10 /* NButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FC9EFC28814D4100FECC10 /* NButton.swift */; };
 		96FC9F042881930300FECC10 /* DetailPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FC9F032881930300FECC10 /* DetailPostVC.swift */; };
 		96FC9F0628819D1E00FECC10 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FC9F0528819D1E00FECC10 /* Models.swift */; };
 		96FD6E6F288426220085DAAE /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FD6E6E288426220085DAAE /* Double+Ext.swift */; };
@@ -29,7 +28,6 @@
 		96FC9EF2288030A100FECC10 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		96FC9EF4288030A100FECC10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96FC9EFA2880347F00FECC10 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
-		96FC9EFC28814D4100FECC10 /* NButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NButton.swift; sourceTree = "<group>"; };
 		96FC9F032881930300FECC10 /* DetailPostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPostVC.swift; sourceTree = "<group>"; };
 		96FC9F0528819D1E00FECC10 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		96FD6E6E288426220085DAAE /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
@@ -50,7 +48,6 @@
 		9647BF7E288699E9008C911D /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
-				9647BF8128869A11008C911D /* Buttons */,
 				9647BF8028869A09008C911D /* Cells */,
 				9647BF7F288699F9008C911D /* TabBarControllers */,
 			);
@@ -71,14 +68,6 @@
 				96FC9EFA2880347F00FECC10 /* PostCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		9647BF8128869A11008C911D /* Buttons */ = {
-			isa = PBXGroup;
-			children = (
-				96FC9EFC28814D4100FECC10 /* NButton.swift */,
-			);
-			path = Buttons;
 			sourceTree = "<group>";
 		};
 		9647BF8228869A28008C911D /* Screens */ = {
@@ -213,7 +202,6 @@
 				96FC9F042881930300FECC10 /* DetailPostVC.swift in Sources */,
 				96FC9EEB2880309C00FECC10 /* MainViewController.swift in Sources */,
 				96FC9EE72880309C00FECC10 /* AppDelegate.swift in Sources */,
-				96FC9EFD28814D4100FECC10 /* NButton.swift in Sources */,
 				96FC9EFB2880347F00FECC10 /* PostCell.swift in Sources */,
 				96FD6E6F288426220085DAAE /* Double+Ext.swift in Sources */,
 				96FC9F0628819D1E00FECC10 /* Models.swift in Sources */,
