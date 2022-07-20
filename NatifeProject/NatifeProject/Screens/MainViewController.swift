@@ -8,10 +8,13 @@
 import UIKit
 import Foundation
 
+
 class MainViewController: UIViewController {
     
+//    var dataManager: DataManager? = NetworkManager()
+    
     var posts: [Post] = []
-    var post: Post?
+    
     var filtered: [Post] = [] {
         didSet {
             tableView.reloadData()
@@ -23,8 +26,8 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        fetchData()
         configureItems()
+        fetchData()
     }
 }
 
@@ -132,7 +135,14 @@ extension MainViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print((cell as? PostCell)?.previewText.numberOfLines as Any)
+        print((cell as? PostCell)?.previewText.textWidth())
+        if ((cell as? PostCell)?.previewText.textWidth())! > 581.0 {
+            (cell as? PostCell)?.previewText.numberOfLines = 2
+            (cell as? PostCell)?.button.isHidden = false
+        } else {
+            (cell as? PostCell)?.previewText.numberOfLines = 0
+            (cell as? PostCell)?.button.isHidden = true
+        }
     }
     
 }
@@ -152,10 +162,10 @@ extension MainViewController: UITableViewDelegate {
 
 // MARK: - Networking
 extension MainViewController {
-    
+
     func fetchData() {
         let url = URL(string: "https://raw.githubusercontent.com/anton-natife/jsons/master/api/main.json")!
-        
+
         URLSession.shared.dataTask(with: url) { data, response, error in
             DispatchQueue.main.async { [self] in
                 guard let data = data, error == nil else {
@@ -163,7 +173,7 @@ extension MainViewController {
                 }
                 do {
                     let jsonData = try Data(contentsOf: url)
-                    posts = try JSONDecoder().decode(Result.self, from: jsonData).posts
+                    posts = try JSONDecoder().decode(Results.self, from: jsonData).posts
                     filtered = posts
                 } catch {
                     print("Error: \(error)")
@@ -172,3 +182,5 @@ extension MainViewController {
         }.resume()
     }
 }
+
+

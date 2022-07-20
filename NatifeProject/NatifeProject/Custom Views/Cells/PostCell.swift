@@ -32,6 +32,7 @@ class PostCell: UITableViewCell {
     
     private func setup() {
         
+        
         // Title Label
         name.translatesAutoresizingMaskIntoConstraints = false
         name.font = UIFont.preferredFont(forTextStyle: .title3)
@@ -41,9 +42,10 @@ class PostCell: UITableViewCell {
         
         // Preview Text
         previewText.translatesAutoresizingMaskIntoConstraints = false
-        previewText.font = UIFont.preferredFont(forTextStyle: .body)
         previewText.textColor = .systemGray
-        previewText.numberOfLines = 0
+        
+        previewText.lineBreakMode = .byTruncatingTail
+        
         
         // Likes
         likes.translatesAutoresizingMaskIntoConstraints = false
@@ -59,13 +61,11 @@ class PostCell: UITableViewCell {
         // Button
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
-        
         contentView.addSubview(name)
         contentView.addSubview(previewText)
         contentView.addSubview(likes)
         contentView.addSubview(button)
         contentView.addSubview(dateLabel)
-        
     }
     
     private func layout() {
@@ -89,22 +89,21 @@ class PostCell: UITableViewCell {
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             
             // NButton
-            button.topAnchor.constraint(equalTo: likes.bottomAnchor, constant: 10),
-            button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
+            button.topAnchor.constraint(equalTo: likes.bottomAnchor, constant: 20),
+            button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            button.heightAnchor.constraint(equalToConstant: 30),
+            button.centerXAnchor.constraint(equalTo: previewText.centerXAnchor),
+            
         ])
         
     }
     
-    @objc func buttonTapped() {
-        
-        if state {
-            previewText.numberOfLines = 2
-        } else {
-            previewText.numberOfLines = 0
-        }
-        state.toggle()
+    @objc func buttonTapped(sender: UIButton) {
+        let numberOfLines = previewText.numberOfLines == 0 ? 2 : 0
+        previewText.numberOfLines = numberOfLines
+        let newTitle = numberOfLines == 2 ? "Expand" : "Collapse"
+        sender.setTitle(newTitle, for: .normal)
+        UIView.animate(withDuration: 0.5) { self.contentView.layoutIfNeeded() }
     }
     
     func configure(with post: Post) {
@@ -113,17 +112,6 @@ class PostCell: UITableViewCell {
         likes.text = "❤️ \(post.likes_count)"
         dateLabel.text = "\(configureDateLabel(with: post))"
     }
-    
-    func updateState() {
-        
-        if previewText.numberOfLines > 2 {
-            button.isHidden = false
-            previewText.numberOfLines = 2
-        } else {
-            button.isHidden = true
-        }
-    }
-    
     
     func configureDateLabel(with post: Post) -> String {
 

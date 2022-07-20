@@ -53,7 +53,7 @@ extension DetailPostVC {
         previewText.translatesAutoresizingMaskIntoConstraints = false
         previewText.text = posts?.preview_text
         previewText.font = UIFont.preferredFont(forTextStyle: .body)
-        previewText.numberOfLines = 10
+        previewText.numberOfLines = 0
         
         // Likes
         likes.translatesAutoresizingMaskIntoConstraints = false
