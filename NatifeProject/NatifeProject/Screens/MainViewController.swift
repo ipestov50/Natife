@@ -40,7 +40,6 @@ extension MainViewController {
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorStyle = .none
         
         tableView.register(PostCell.self, forCellReuseIdentifier: PostCell.reuseID)
         tableView.rowHeight = UITableView.automaticDimension
@@ -130,21 +129,10 @@ extension MainViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseID, for: indexPath) as! PostCell
         let post = filtered[indexPath.row]
         cell.configure(with: post)
+        cell.shouldUpdateCell = { tableView.performBatchUpdates(nil) }
         
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print((cell as? PostCell)?.previewText.textWidth())
-        if ((cell as? PostCell)?.previewText.textWidth())! > 581.0 {
-            (cell as? PostCell)?.previewText.numberOfLines = 2
-            (cell as? PostCell)?.button.isHidden = false
-        } else {
-            (cell as? PostCell)?.previewText.numberOfLines = 0
-            (cell as? PostCell)?.button.isHidden = true
-        }
-    }
-    
 }
 
 // MARK: - UITableViewDelegate

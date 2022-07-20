@@ -55,12 +55,12 @@ extension UILabel {
         return Int(ceil(CGFloat(labelSize.height) / font.lineHeight))
     }
 
-    func countLines(width: CGFloat = .greatestFiniteMagnitude, height: CGFloat = .greatestFiniteMagnitude) -> Int {
+    func countLines(width: CGFloat? = nil, height: CGFloat? = nil) -> Int {
         // Call self.layoutIfNeeded() if your view uses auto layout
         let myText = (self.text ?? "") as NSString
 
-        let rect = CGSize(width: width, height: height)
-        let labelSize = myText.boundingRect(with: rect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: self.font], context: nil)
+        let rect = CGSize(width: width ?? frame.width, height: height ?? frame.height)
+        let labelSize = myText.boundingRect(with: rect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: self.font as Any], context: nil)
 
         return Int(ceil(CGFloat(labelSize.height) / self.font.lineHeight))
     }
