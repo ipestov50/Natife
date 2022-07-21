@@ -12,7 +12,7 @@ struct Results: Codable {
 }
 
 struct Post: Codable {
-    
+    let postId: Int
     let title: String
     let preview_text: String
     let likes_count: Int

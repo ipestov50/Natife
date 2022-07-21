@@ -15,6 +15,8 @@ class MainViewController: UIViewController {
     
     var posts: [Post] = []
     
+    var cellStates: [Int: Bool] = [:]
+    
     var filtered: [Post] = [] {
         didSet {
             tableView.reloadData()
@@ -128,8 +130,13 @@ extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseID, for: indexPath) as! PostCell
         let post = filtered[indexPath.row]
-        cell.configure(with: post)
-        cell.shouldUpdateCell = { tableView.performBatchUpdates(nil) }
+        if let isExpanded = cellStates[post.postId] {
+            cell.configure(with: post, isExpanded: isExpanded)
+        }
+        cell.shouldUpdateCell = { [unowned self] isExpanded in
+            self.cellStates[post.postId] = isExpanded
+            tableView.performBatchUpdates(nil)
+        }
         
         return cell
     }
@@ -163,6 +170,9 @@ extension MainViewController {
                     let jsonData = try Data(contentsOf: url)
                     posts = try JSONDecoder().decode(Results.self, from: jsonData).posts
                     filtered = posts
+                    for post in posts {
+                        cellStates[post.postId] = false
+                    }
                 } catch {
                     print("Error: \(error)")
                 }

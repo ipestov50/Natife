@@ -10,8 +10,13 @@ import UIKit
 
 class PostCell: UITableViewCell {
     
-    var collapsed: Bool = true
-    var shouldUpdateCell: (() -> Void)?
+    private var isExpanded: Bool = false {
+        didSet {
+            // обновляет по состоянию
+            updateState(isExpanded)
+        }
+    }
+    var shouldUpdateCell: ((Bool) -> Void)?
     
     let container = UIStackView()
     let cover = UIView()
@@ -61,7 +66,6 @@ class PostCell: UITableViewCell {
         dateLabel.textColor = .gray
         
         // Button
-        button.setTitle("Expand", for: .normal)
         button.backgroundColor = .systemGray
         button.layer.cornerRadius = 10
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
@@ -118,25 +122,17 @@ class PostCell: UITableViewCell {
     }
 
     @objc func buttonTapped(sender: UIButton) {
-        
-        if collapsed {
-            sender.setTitle("Collapse", for: .normal)
-            previewText.numberOfLines = 0
-        } else {
-            sender.setTitle("Expand", for: .normal)
-            previewText.numberOfLines = 2
-        }
-        collapsed.toggle()
-        shouldUpdateCell?()
+        // здесь мы меняем сосотяние ячейик
+        isExpanded.toggle()
+        shouldUpdateCell?(isExpanded)
     }
     
-    func configure(with post: Post) {
-        
+    func configure(with post: Post, isExpanded: Bool) {
         previewText.text = post.preview_text
         likes.text = "❤️ \(post.likes_count)"
         dateLabel.text = "\(configureDateLabel(with: post))"
-        
-        updateState()
+        // здесь сохраняем состояние в ячейку
+        self.isExpanded = isExpanded
     }
     
     func configureDateLabel(with post: Post) -> String {
@@ -151,18 +147,29 @@ class PostCell: UITableViewCell {
         return relativeDate
     }
     
-    func updateState() {
-        
-      let lines = previewText.countLines(width: UIScreen.main.bounds.width, height: .greatestFiniteMagnitude)
-        
-        if lines > 2 {
-            previewText.numberOfLines = 2
-            buttonCover.isHidden = false
-        } else {
+    func updateState(_ isExpanded: Bool) {
+        if isExpanded {
+            // 2 состояние - кнопка есть и ячейка развернута
+            button.setTitle("Collapse", for: .normal)
             previewText.numberOfLines = 0
-            buttonCover.isHidden = true
+        } else {
+            let lines = previewText.countLines(width: UIScreen.main.bounds.width, height: .greatestFiniteMagnitude)
+            if lines > 2 {
+                // 1 состояние - кнопка есть и ячейка свернута
+                previewText.numberOfLines = 2
+                buttonCover.isHidden = false
+                button.setTitle("Expand", for: .normal)
+            } else {
+                // 3 состояние - кнопки нет и ячейка свернута
+                previewText.numberOfLines = 0
+                buttonCover.isHidden = true
+            }
         }
-    
     }
+    
+    // 1 состояние - кнопка есть и ячейка свернута
+    // 2 состояние - кнопка есть и ячейка развернута
+    // 3 состояние - кнопки нет и ячейка свернута
+    // 4 состояние - кнопки нет и ячейка развернута - не может быть
     
 }
