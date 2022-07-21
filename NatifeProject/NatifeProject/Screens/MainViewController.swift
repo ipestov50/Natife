@@ -9,9 +9,7 @@ import UIKit
 import Foundation
 
 
-class MainViewController: UIViewController {
-    
-//    var dataManager: DataManager? = NetworkManager()
+class MainViewController: SpinnerViewController {
     
     var posts: [Post] = []
     
@@ -22,6 +20,8 @@ class MainViewController: UIViewController {
             tableView.reloadData()
         }
     }
+    
+    var isLoadingPost = false
     
     var tableView = UITableView()
     
@@ -119,6 +119,7 @@ extension MainViewController {
         filtered = posts
     }
     
+    
 }
 
 // MARK: - UITableViewDataSource
@@ -159,6 +160,8 @@ extension MainViewController: UITableViewDelegate {
 extension MainViewController {
 
     func fetchData() {
+        showLoadingView()
+        
         let url = URL(string: "https://raw.githubusercontent.com/anton-natife/jsons/master/api/main.json")!
 
         URLSession.shared.dataTask(with: url) { data, response, error in
@@ -176,6 +179,7 @@ extension MainViewController {
                 } catch {
                     print("Error: \(error)")
                 }
+                dismissLoadingView()
             }
         }.resume()
     }

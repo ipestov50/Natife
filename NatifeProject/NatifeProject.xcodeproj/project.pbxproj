@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7342E65E2885B4DA00513948 /* UILabel+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7342E65D2885B4DA00513948 /* UILabel+Ext.swift */; };
+		9616E9EA2889CD6E00A65387 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9616E9E92889CD6E00A65387 /* SpinnerViewController.swift */; };
 		96FC9EE72880309C00FECC10 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FC9EE62880309C00FECC10 /* AppDelegate.swift */; };
 		96FC9EEB2880309C00FECC10 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FC9EEA2880309C00FECC10 /* MainViewController.swift */; };
 		96FC9EF0288030A100FECC10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96FC9EEF288030A100FECC10 /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		7342E65D2885B4DA00513948 /* UILabel+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Ext.swift"; sourceTree = "<group>"; };
+		9616E9E92889CD6E00A65387 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 		96FC9EE32880309C00FECC10 /* NatifeProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NatifeProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96FC9EE62880309C00FECC10 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96FC9EEA2880309C00FECC10 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -50,6 +52,7 @@
 			children = (
 				9647BF8028869A09008C911D /* Cells */,
 				9647BF7F288699F9008C911D /* TabBarControllers */,
+				9616E9E92889CD6E00A65387 /* SpinnerViewController.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				96FC9EE72880309C00FECC10 /* AppDelegate.swift in Sources */,
 				96FC9EFB2880347F00FECC10 /* PostCell.swift in Sources */,
 				96FD6E6F288426220085DAAE /* Double+Ext.swift in Sources */,
+				9616E9EA2889CD6E00A65387 /* SpinnerViewController.swift in Sources */,
 				96FC9F0628819D1E00FECC10 /* Models.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
